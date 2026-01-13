@@ -171,11 +171,11 @@ if st.button("Generate CRM Recommendation"):
         "AverageRiskScore": round(avg_score, 2),
         "Action": action,
         "Channel": channel,
-        "Timestamp": datetime.now()
+        "Timestamp": datetime.now(),
         "AllowEmail": allow_email,
         "AllowSMS": allow_sms,
         "AllowPush": allow_push,
-        "PreferredDevice": preferred_device,
+        "PreferredDevice": preferred_device
 
     }
 
@@ -193,4 +193,5 @@ if st.button("Generate CRM Recommendation"):
 
     if "No communication" in channel:
         st.warning("Customer has no permission. Action cannot be executed.")
+
 
