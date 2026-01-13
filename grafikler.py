@@ -13,7 +13,6 @@ df.columns = [c.strip() for c in df.columns]
 
 print("CSV okundu:", len(df))
 
-# Fake churn probability (makale için yeterli)
 np.random.seed(42)
 df["churn_probability"] = (
     0.4 * (5 - df["SatisfactionScore"]) / 4 +
@@ -94,3 +93,4 @@ plt.savefig("fig4_crm_action_coverage.png")
 plt.close()
 
 print("TÜM GRAFİKLER KAYDEDİLDİ")
+
