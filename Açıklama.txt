@@ -1,0 +1,153 @@
+AI TABANLI CRM CHURN TAHMİN VE AKSİYON SİSTEMİ
+
+Bu projede amaç, bir e-ticaret veri seti üzerinden müşteri churn (terk etme)
+riskini tahmin eden bir yapay zeka modeli kurmak ve bu tahmini CRM tarafında
+kullanılabilir aksiyonlara dönüştürmektir. Makaledeki churn prediction yaklaşımını
+gerçek hayatta CRM’de nasıl kullanabileceğimizi uygulamalı olarak göstermek.
+
+1) KULLANILAN VERİ SETİ VE ÖĞRENME YAPISI
+
+Makalede kullanılan e-ticaret churn veri seti Python ortamına aktarıldı.
+Bu veri setinde Churn değişkeni (0 = churn yok, 1 = churn var) hedef değişken olarak yer alır.
+
+Model, geçmiş müşteri davranışlarından şunu öğrenir:
+- Hangi müşteri profilleri churn oluyor (1)
+- Hangi müşteri profilleri churn olmuyor (0)
+
+Bu öğrenme, makine öğrenmesi modeli üzerinden yapılır ve sonuç
+churn olasılığı (0–1 arası) olarak üretilir.
+
+
+2) MODEL VE YAPAY ZEKA YAKLAŞIMI
+
+Projede:
+- Logistic Regression
+- Standartlaştırma (StandardScaler) kullanılmıştır.
+
+Modelin amacı:
+“Bu müşterinin churn riski ne kadar?” sorusuna cevap vermektir.
+
+Model çıktısı:
+- Churn olasılığı
+- Bu olasılığa göre müşteriyi risk segmenti içine koymak
+
+
+3) RİSK SEGMENTASYONU
+
+Model çıktısı ve belirlenen iş kuralları birlikte kullanılarak
+müşteriler 3 segmente ayrılır:
+
+- High Risk
+- Medium Risk
+- Low Risk
+
+Segmentasyon yapılırken aşağıdaki faktörler dikkate alınır:
+
+Satisfaction Score:
+- 1–2 → High risk
+- 3 → Medium risk
+- 4–5 → Low risk
+
+Complain:
+- 1 → Risk artırıcı
+- 0 → Risk azaltıcı
+
+Order Amount Hike From Last Year:
+- 0 veya yok → High risk
+- 0–14 → Medium risk
+- 14+ → Low risk
+
+Coupon Used:
+- 0–2 → High risk
+- 3–6 → Medium risk
+- 7+ → Low risk
+
+Order Count:
+- 0–5 → High risk
+- 6–9 → Medium risk
+- 10+ → Low risk
+
+Days Since Last Order:
+- 15+ → High risk
+- 7–14 → Medium risk
+- 0–6 → Low risk
+
+Not: Eğer bir alan boş (null) gelirse, o faktör skorlamaya dahil edilmez.
+
+
+4) SKORLAMA
+
+Her faktör için risk seviyesi belirlenir.
+Bu risk seviyeleri sayısal skora çevrilir ve ortalaması alınır.
+
+Ortaya çıkan ortalama risk skoru,
+müşterinin genel churn riskini temsil eder.
+
+Bu yaklaşım:
+- Tek bir değişkene bağlı kalmamayı
+- Birden fazla müşteri davranışını birlikte değerlendirmeyi
+amaçlar.
+
+
+5) CRM AKSİYONLARI
+
+Risk segmentine göre CRM aksiyonları otomatik üretilir.
+
+HIGH RISK:
+- Kupon / indirim
+- Service recovery
+- Win-back kampanyaları
+- İletişim kanalları:
+  - Eğer izin varsa: Email + SMS + App Push
+  - İzin yoksa: “İlgili kanala izin olmadığı için aksiyon alınamadı” açıklaması
+
+MEDIUM RISK:
+- Orta seviye teşvik
+- Kullanılan cihaza göre aksiyon:
+  - Mobile → App Push + kupon
+  - Desktop → Email kampanyası
+- Yalnızca izin verilen kanallar kullanılır
+
+LOW RISK:
+- Standart kampanya bildirimleri
+- İzinler ve cihaz uygunsa App Push
+- Aksiyon yoksa bilgilendirme mesajı
+
+
+6) İLETİŞİM İZİNLERİ
+
+Arayüzde kullanıcıdan şu izinler alınır:
+- Email permission (0/1)
+- SMS permission (0/1)
+- Push notification permission (0/1)
+
+Bir kanal için izin yoksa:
+- Sistem o kanaldan aksiyon önermez
+- Açıklama kısmında açıkça belirtilir
+
+
+7) AÇIKLANABİLİRLİK
+
+Sistem yalnızca sonuç üretmez, aynı zamanda şunları açıklar:
+- Hangi faktörler riski artırdı
+- Hangi faktörler riski düşürdü
+- Neden bu CRM aksiyonu önerildi
+
+Bu sayede:
+- Model çıktıları iş birimleri tarafından yorumlanabilir olur
+- Karar destek sistemi gibi çalışır
+
+
+8) WEB ARAYÜZÜ
+
+Proje Streamlit kullanılarak web arayüzüne taşınmıştır.
+
+Arayüzde:
+- Yeni müşteri bilgileri girilir
+- Churn olasılığı hesaplanır
+- Risk segmenti gösterilir
+- Önerilen CRM aksiyonu açıklamalı şekilde sunulur
+
+
+
+

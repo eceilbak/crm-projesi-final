@@ -1,0 +1,2 @@
+Tenure,SatisfactionScore,DaysSinceLastOrder,OrderCount,CouponUsed,Complain,OrderAmountHike,RiskSegment,AverageRiskScore,Action,Channel,Timestamp
+6,3,10,3,1,0,10,Medium,2.17,Reminder + personalized offer,No communication sent (no permission),2026-01-14 01:18:03.146350
